@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+
+<html lang="en">
+{% load static %}
+
+<head>
+  <title>COVID-19 Gujarat</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+  <!-- <script src="{% static 'script.js' %}"></script> -->
+
+  <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+
+</head>
+<body>
+
+<nav class="navbar navbar-expand-md bg-light navbar-light">
+  <!-- Brand -->
+  <a class="navbar-brand" href="#"><img src='{% static "icon.png" %}' alt="logo" class="icon"></a>
+
+  <!-- Toggler/collapsibe Button -->
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <!-- Navbar links -->
+  <div class="collapse navbar-collapse" id="collapsibleNavbar">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" href="" data-tooltip="I’m the tooltip text.">Home</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+<div class="container-fluid">
+	<div class="row mt-4">
+		<div class="col-12"><h5 class="text-center">GUJARAT COVID-19 TRACKER</h5></div> 
+	</div>
+	<div class="row mt-3">
+        <div class="col-md-4 col-sm-12 dashboard-status">
+            <div class="card pull-up text-red border">
+                <div class="card-body dashboard-count">
+                    <div class="media d-flex position-relative">
+                        <div class="media-right-icon align-self-center">
+                            <h3 id="TotalConfirmed" class="count text-red">{{ totalConfirm }}</h3>
+                        </div>
+                        <div class="media-body text-right">
+                            <h5 class="desc">Confirmed Positive Cases</h5>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-12 dashboard-status">
+            <div class="card pull-up text-success border">
+                <div class="card-body dashboard-count">
+                    <div class="media d-flex position-relative">
+                        <div class="media-right-icon align-self-center">
+                            <h3 id="Totalrecovered" class="count text-success">{{ totalRecover }}</h3>
+                        </div>
+                        <div class="media-body text-right">
+                            <h5 class="desc">Patients Recovered</h5>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 col-sm-12 dashboard-status">
+            <div class="card pull-up text-black border">
+                <div class="card-body dashboard-count">
+                    <div class="media d-flex position-relative">
+                        <div class="media-right-icon align-self-center">
+                            <h3 id="TotalDeath" class="count " style="color:black">{{ totalDeath }}</h3>
+                        </div>
+                        <div class="media-body text-right">
+                            <h5 class="desc">Total Deaths</h5>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  <div class="row mt-4">
+    <div class="col-sm-6">
+    	<center>
+	    	<table class="table1 table-sm table-responsive table-striped" id="coviddata">
+			    <thead>
+			      <tr>
+			        <th class="sticky state-heading">
+			        	<div class="heading-content">
+			        		DISRTICT
+			        	</div>
+			    	</th>
+			        <th class="sticky">
+			        	<div class="heading-content">
+			        		<span class="is-cherry" title="Confirmed">Confirmed</span>
+			        	</div>
+			        </th>
+			        <th class="sticky">
+			        	<div class="heading-content">
+			        		<span class="is-blue" title="Active">Active</span>
+			        	</div>
+			        </th>
+			        <th class="sticky">
+			        	<div class="heading-content">
+			        		<span class="is-green" title="Recovered">Recovered</span>
+			        	</div>
+			        </th>
+			        <th class="sticky">
+			        	<div class="heading-content">
+			        		<span class="is-gray" title="Deceased">Deceased</span>
+			        	</div>
+			        </th>
+			      </tr>
+			    </thead>
+			    <tbody>
+			     {% for x in data %}
+                 <tr>
+                    <td>{{x.DistrictName}}</td>
+                    <td>{{x.ConfirmedCount}}</td>
+                    <td>{{x.ActiveConfirmedCount}}</td>
+                    <td>{{x.PatientCuredCount}}</td>
+                    <td>{{x.TotalDath}}</td>
+                </tr>
+                 {% endfor %}
+			    </tbody>
+			  </table>
+			  
+		  </center>	
+    </div>
+    <div class="col-sm-6">
+  
+		
+
+		<div class="map">
+            <img src="{% static 'gujmap.png' %}" class="img-thumbnail" alt="" />
+            {% for x in data %}
+                <div id={{x.DistrictName}} class="box marker-red {{x.DistrictName}}">
+                    <div class="pin-text">
+                        <table>
+                            <tr>
+                                <td>District <td> : </td> </td>
+                                <td> {{x.DistrictName}} </td>
+                            </tr>
+                            <tr>
+                                <td>Confirm <td> : </td> </td>
+                                <td> {{x.ConfirmedCount}} </td>
+                            </tr>
+                            <tr>
+                                <td>Active <td> : </td> </td>
+                                <td> {{x.ActiveConfirmedCount}} </td>
+                            </tr>
+                            <tr>
+                                <td>Recovered <td> : </td> </td>
+                                <td> {{x.PatientCuredCount}} </td>
+                            </tr>
+                            <tr><td>Deceased<td> : </td>
+                                <td>{{x.TotalDath}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                 
+            {% endfor %}
+            
+            
+
+        </div>
+
+	</map>
+
+   
+</div>
+<div class="container-fluid bg-dark text-white text-center" style="font-size: 14px;">
+	&copy; 2020 vaibhav maheshwari <span class="float-right">Design By : Vaibhav Maheshwari</span>
+</div>
+<script type="text/javascript">
+	
+</script>
+</body>
+</html>
